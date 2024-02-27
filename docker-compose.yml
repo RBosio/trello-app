@@ -9,8 +9,7 @@ services:
       - PORT=${APP_PORT}
       - NODE_ENV=development
     volumes:
-      - ./src:/app/src
-      - ./.env:/app/.env
+      - ./:/app
     depends_on:
       - mysql_db
   mysql_db:
