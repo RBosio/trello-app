@@ -22,6 +22,9 @@ export class UserService {
       where: {
         status: true,
       },
+      relations: {
+        tasks: true,
+      },
     });
   }
 
@@ -30,6 +33,9 @@ export class UserService {
       where: {
         id,
         status: true,
+      },
+      relations: {
+        tasks: true,
       },
     });
 
