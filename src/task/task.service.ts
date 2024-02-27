@@ -5,19 +5,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from 'src/entities/task.entity';
 import { UserService } from 'src/user/user.service';
+import { NamespaceService } from 'src/namespace/namespace.service';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectRepository(Task) private taskRepository: Repository<Task>,
     private userService: UserService,
+    private namespaceService: NamespaceService,
   ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     const user = await this.userService.findOne(createTaskDto.userId);
     const task = this.taskRepository.create(createTaskDto);
+    const namespace = await this.namespaceService.findOne(
+      createTaskDto.namespaceId,
+    );
 
     task.user = user;
+    task.namespace = namespace;
 
     return this.taskRepository.save(task);
   }
@@ -26,6 +32,7 @@ export class TaskService {
     return this.taskRepository.find({
       relations: {
         user: true,
+        namespace: true,
       },
     });
   }
@@ -37,6 +44,7 @@ export class TaskService {
       },
       relations: {
         user: true,
+        namespace: true,
       },
     });
 
@@ -49,8 +57,16 @@ export class TaskService {
 
   async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
     const task = await this.findOne(id);
+    let taskUpdated = task;
 
-    const taskUpdated = Object.assign(task, updateTaskDto);
+    if (updateTaskDto.namespaceId) {
+      const namespace = await this.namespaceService.findOne(
+        updateTaskDto.namespaceId,
+      );
+      taskUpdated.namespace = namespace;
+    } else {
+      taskUpdated = Object.assign(task, updateTaskDto);
+    }
 
     return this.taskRepository.save(taskUpdated);
   }

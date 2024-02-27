@@ -8,5 +8,6 @@ import { Namespace } from 'src/entities/namespace.entity';
   imports: [TypeOrmModule.forFeature([Namespace])],
   controllers: [NamespaceController],
   providers: [NamespaceService],
+  exports: [NamespaceService],
 })
 export class NamespaceModule {}
