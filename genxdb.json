@@ -20,7 +20,8 @@
         {
           "name": "email",
           "type": "string",
-          "length": 40
+          "length": 40,
+          "unique": true
         },
         {
           "name": "password",

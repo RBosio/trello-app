@@ -14,7 +14,7 @@ export class User {
 	@Column({ type: "varchar", length: 20 })
 	surname: string
 
-	@Column({ type: "varchar", length: 40 })
+	@Column({ unique: true, type: "varchar", length: 40 })
 	email: string
 
 	@Column()

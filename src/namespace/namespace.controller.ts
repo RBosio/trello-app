@@ -6,13 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { NamespaceService } from './namespace.service';
 import { CreateNamespaceDto } from './dto/create-namespace.dto';
 import { UpdateNamespaceDto } from './dto/update-namespace.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('namespace')
+@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('namespace')
 export class NamespaceController {
   constructor(private readonly namespaceService: NamespaceService) {}

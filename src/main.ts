@@ -9,6 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api/v1');
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Trello App')
     .setVersion('1.0')
     .build();
