@@ -1,4 +1,4 @@
 export class UpdateTaskDto {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 }

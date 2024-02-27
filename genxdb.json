@@ -92,6 +92,11 @@
         {
           "name": "name",
           "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true
         }
       ],
       "primary": "id",

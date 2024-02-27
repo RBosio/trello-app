@@ -10,6 +10,9 @@ export class Namespace {
 	@Column()
 	name: string
 
+	@Column({ nullable: true })
+	description: string
+
 	@OneToMany(() => Task, task => task.namespace )
 	tasks: Task[]
 }
