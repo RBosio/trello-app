@@ -1,0 +1,25 @@
+services:
+  nestjs_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    environment:
+      - PORT=${APP_PORT}
+      - NODE_ENV=development
+    volumes:
+      - ./src:/app/src
+      - ./.env:/app/.env
+    depends_on:
+      - mysql_db
+  mysql_db:
+    image: mysql
+    ports:
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_TCP_PORT=${MYSQL_PORT}
