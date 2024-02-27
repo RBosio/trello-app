@@ -16,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
       password: process.env.MYSQL_PASSWORD,
       port: Number(process.env.MYSQL_PORT),
       database: process.env.MYSQL_DATABASE,
-      entities: [],
+      entities: [__dirname + '/entities/*.entity{.tx,.js}'],
       synchronize: true,
     }),
   ],

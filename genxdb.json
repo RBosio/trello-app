@@ -1,0 +1,106 @@
+{
+  "database": [
+    {
+      "name": "user",
+      "columns": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "length": 20
+        },
+        {
+          "name": "surname",
+          "type": "string",
+          "length": 20
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "length": 40
+        },
+        {
+          "name": "password",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "name": "crated_at",
+          "type": "Date",
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary": "id",
+      "relations": [
+        {
+          "table": "task",
+          "relation": "1-N"
+        },
+        {
+          "table": "role",
+          "relation": "1-1"
+        }
+      ]
+    },
+    {
+      "name": "task",
+      "columns": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true
+        }
+      ],
+      "primary": "id"
+    },
+    {
+      "name": "role",
+      "columns": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "primary": "id"
+    },
+    {
+      "name": "namespace",
+      "columns": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "primary": "id",
+      "relations": [
+        {
+          "table": "task",
+          "relation": "1-N"
+        }
+      ]
+    }
+  ]
+}
