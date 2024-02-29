@@ -36,6 +36,7 @@ export const AddNamespace: React.FC<any> = ({ setNamespaces }) => {
       }
     );
 
+    resp.data.tasks = [];
     setNamespaces((n: any) => [...n, resp.data]);
     setForm({
       name: "",
@@ -48,7 +49,7 @@ export const AddNamespace: React.FC<any> = ({ setNamespaces }) => {
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center justify-center bg-white gap-4 p-4 rounded-md"
-        >
+      >
         <h2 className="text-xl text-primary">Namespace</h2>
         <div className="flex items-center justify-between w-full gap-4">
           <label htmlFor="name">Nombre</label>

@@ -9,10 +9,10 @@ import { cleanError } from "../lib/cleanError";
 export const Dashboard: React.FC<any> = () => {
   const [namespaces, setNamespaces] = useState<any>([]);
   const [add, setAdd] = useState(false);
+  const [addN, setAddN] = useState(true);
 
   useEffect(() => {
     const fetchNamespaces = async () => {
-      console.log("llamando...");
       const resp = await axios.get("http://localhost:3000/api/v1/namespace", {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -88,10 +88,31 @@ export const Dashboard: React.FC<any> = () => {
   return (
     <>
       {namespaces.length > 0 ? (
-        <div className="flex items-center mx-4">
-          <div className="flex flex-col gap-8">
-            <AddNamespace setNamespaces={setNamespaces} />
-            <AddTask namespaces={namespaces} addTask={addTask} />
+        <div className="flex items-center mx-4 gap-4">
+          <div className="flex flex-col h-96 gap-4 mt-20">
+            <div className="flex items-center justify-between bg-primary text-white rounded-md">
+              <p
+                onClick={() => setAddN(true)}
+                className={`p-2 ${
+                  addN && "bg-white text-secondary"
+                } rounded-md hover:cursor-pointer hover:opacity-70`}
+              >
+                Namespace
+              </p>
+              <p
+                onClick={() => setAddN(false)}
+                className={`p-2 ${
+                  !addN && "bg-white text-secondary"
+                } rounded-md hover:cursor-pointer hover:opacity-70`}
+              >
+                Tarea
+              </p>
+            </div>
+            {addN ? (
+              <AddNamespace setNamespaces={setNamespaces} />
+            ) : (
+              <AddTask namespaces={namespaces} addTask={addTask} />
+            )}
           </div>
           <div className="h-[calc(100vh-100px)] flex w-full p-4 overflow-x-scroll gap-8">
             {namespaces.map((ns: any) => (
@@ -114,7 +135,10 @@ export const Dashboard: React.FC<any> = () => {
                   {ns.description}
                 </h4>
                 {ns.tasks.map((t: any) => (
-                  <div className="flex flex-col items-center bg-primary p-2 m-4 rounded-md">
+                  <div
+                    key={t.id}
+                    className="flex flex-col items-center bg-primary p-2 m-4 rounded-md"
+                  >
                     <h3 className="text-white font-semibold">{t.title}</h3>
                     <h3 className="text-white">{t.description}</h3>
                   </div>
