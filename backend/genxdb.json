@@ -41,7 +41,7 @@
       "primary": "id",
       "relations": [
         {
-          "table": "task",
+          "table": "namespace",
           "relation": "1-N"
         },
         {
@@ -98,6 +98,11 @@
           "name": "description",
           "type": "string",
           "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "boolean",
+          "default": true
         }
       ],
       "primary": "id",

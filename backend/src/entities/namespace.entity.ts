@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm"
 
 import { Task } from "./task.entity"
+import { User } from "./user.entity"
 
 @Entity()
 export class Namespace {
@@ -13,6 +14,12 @@ export class Namespace {
 	@Column({ nullable: true })
 	description: string
 
+	@Column({ default: true })
+	status: boolean
+
 	@OneToMany(() => Task, task => task.namespace )
 	tasks: Task[]
+
+	@ManyToOne(() => User, user => user.namespaces )
+	user: User
 }

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from "typeorm"
 
-import { Task } from "./task.entity"
+import { Namespace } from "./namespace.entity"
 import { Role } from "./role.entity"
 
 @Entity()
@@ -29,6 +29,6 @@ export class User {
 	@OneToOne(() => Role)
 	role: Role
 
-	@OneToMany(() => Task, task => task.user )
-	tasks: Task[]
+	@OneToMany(() => Namespace, namespace => namespace.user )
+	namespaces: Namespace[]
 }

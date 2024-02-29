@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "../hooks/useForm";
 import { Input } from "./Input";
 import { Button } from "./Button";
 import { cleanError } from "../lib/cleanError";
 import axios from "axios";
+import { UserContext } from "../context/userContext";
 
 export const AddNamespace: React.FC<any> = ({ setNamespaces }) => {
   const initialForm = {
@@ -17,6 +18,7 @@ export const AddNamespace: React.FC<any> = ({ setNamespaces }) => {
   );
 
   const { name, description } = formState;
+  const { user } = useContext(UserContext);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -25,6 +27,8 @@ export const AddNamespace: React.FC<any> = ({ setNamespaces }) => {
       setMessage("Ingrese el campo nombre!");
       return cleanError(setMessage);
     }
+
+    formState.userId = user.id;
 
     const resp = await axios.post(
       "http://localhost:3000/api/v1/namespace",

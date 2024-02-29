@@ -31,7 +31,7 @@ export class UserService {
         status: true,
       },
       relations: {
-        tasks: true,
+        namespaces: true,
       },
     });
   }
@@ -43,7 +43,7 @@ export class UserService {
         status: true,
       },
       relations: {
-        tasks: true,
+        namespaces: true,
       },
     });
 

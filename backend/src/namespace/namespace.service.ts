@@ -4,24 +4,35 @@ import { Repository } from 'typeorm';
 import { Namespace } from 'src/entities/namespace.entity';
 import { CreateNamespaceDto } from './dto/create-namespace.dto';
 import { UpdateNamespaceDto } from './dto/update-namespace.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class NamespaceService {
   constructor(
     @InjectRepository(Namespace)
     private namespaceRepository: Repository<Namespace>,
+    private userService: UserService,
   ) {}
 
   async create(createNamespaceDto: CreateNamespaceDto): Promise<Namespace> {
     const namespace = this.namespaceRepository.create(createNamespaceDto);
+    const userFound = await this.userService.findOne(createNamespaceDto.userId);
+    namespace.user = userFound;
 
     return this.namespaceRepository.save(namespace);
   }
 
-  async findAll(): Promise<Namespace[]> {
+  async findAll(userId: number): Promise<Namespace[]> {
     return this.namespaceRepository.find({
       relations: {
         tasks: true,
+        user: true,
+      },
+      where: {
+        user: {
+          id: userId,
+        },
+        status: true,
       },
     });
   }
@@ -33,6 +44,7 @@ export class NamespaceService {
       },
       relations: {
         tasks: true,
+        user: true,
       },
     });
 
@@ -56,7 +68,10 @@ export class NamespaceService {
 
   async remove(id: number) {
     const namespace = await this.findOne(id);
-    await this.namespaceRepository.delete(id);
+
+    namespace.status = false;
+
+    await this.namespaceRepository.save(namespace);
 
     return namespace;
   }

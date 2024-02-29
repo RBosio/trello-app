@@ -26,9 +26,9 @@ export class NamespaceController {
     return this.namespaceService.create(createNamespaceDto);
   }
 
-  @Get()
-  findAll() {
-    return this.namespaceService.findAll();
+  @Get('user/:userId')
+  findAll(@Param('userId') userId: string) {
+    return this.namespaceService.findAll(+userId);
   }
 
   @Get(':id')

@@ -51,6 +51,7 @@ export const Signin = () => {
       const user = await response.data;
 
       window.localStorage.setItem("token", data.token);
+      window.localStorage.setItem("id", user.id);
       loadUser(user);
       navigate("/");
     } catch (error: any) {

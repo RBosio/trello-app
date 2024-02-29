@@ -11,16 +11,36 @@ export const Dashboard: React.FC<any> = () => {
   const [add, setAdd] = useState(false);
   const [addN, setAddN] = useState(true);
 
-  useEffect(() => {
-    const fetchNamespaces = async () => {
-      const resp = await axios.get("http://localhost:3000/api/v1/namespace", {
+  const getUser = async () => {
+    const { data } = await axios.get(
+      `http://localhost:3000/api/v1/user/${window.localStorage.getItem("id")}`,
+      {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
-      });
+      }
+    );
 
-      const data = resp.data;
-      setNamespaces(data);
+    return data;
+  };
+
+  useEffect(() => {
+    const fetchNamespaces = async () => {
+      const user = await getUser();
+
+      if (user.id) {
+        const resp = await axios.get(
+          `http://localhost:3000/api/v1/namespace/user/${user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        const data = resp.data;
+        setNamespaces(data);
+      }
     };
     fetchNamespaces();
   }, []);
@@ -32,11 +52,15 @@ export const Dashboard: React.FC<any> = () => {
       },
     });
 
-    const resp = await axios.get("http://localhost:3000/api/v1/namespace", {
-      headers: {
-        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-      },
-    });
+    const user = await getUser();
+    const resp = await axios.get(
+      `http://localhost:3000/api/v1/namespace/user/${user.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
 
     const data = resp.data;
     setNamespaces(data);
@@ -66,11 +90,16 @@ export const Dashboard: React.FC<any> = () => {
         },
       });
 
-      const resp = await axios.get("http://localhost:3000/api/v1/namespace", {
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-        },
-      });
+      const user = await getUser();
+
+      const resp = await axios.get(
+        `http://localhost:3000/api/v1/namespace/user/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       const data = resp.data;
       setNamespaces(data);
