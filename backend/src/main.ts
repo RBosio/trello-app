@@ -7,6 +7,7 @@ async function bootstrap() {
   const PORT = process.env.PORT || 3000;
 
   app.setGlobalPrefix('/api/v1');
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .addBearerAuth()
