@@ -14,6 +14,9 @@ export class Namespace {
 	@Column({ nullable: true })
 	description: string
 
+	@Column()
+	order: number
+
 	@Column({ default: true })
 	status: boolean
 

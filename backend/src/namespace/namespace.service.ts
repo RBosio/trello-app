@@ -19,7 +19,29 @@ export class NamespaceService {
     const userFound = await this.userService.findOne(createNamespaceDto.userId);
     namespace.user = userFound;
 
+    const order = await this.namespaceRepository.count({
+      where: {
+        user: {
+          id: createNamespaceDto.userId,
+        },
+        status: true,
+      },
+    });
+    namespace.order = order;
+
     return this.namespaceRepository.save(namespace);
+  }
+
+  async order(namespaces): Promise<void> {
+    const ns = namespaces.map((n) => n.id);
+
+    ns.map(async (n) => {
+      const namespace = await this.findOne(n);
+      const o = ns.findIndex((o) => o == namespace.id);
+
+      namespace.order = o;
+      await this.namespaceRepository.save(namespace);
+    });
   }
 
   async findAll(userId: number): Promise<Namespace[]> {
@@ -33,6 +55,9 @@ export class NamespaceService {
           id: userId,
         },
         status: true,
+      },
+      order: {
+        order: 'ASC',
       },
     });
   }

@@ -1,10 +1,17 @@
-import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { AddNamespace } from "./AddNamespace";
 import { AddTask } from "./AddTask";
 import { cleanError } from "../lib/cleanError";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { Namespace } from "./Namespace";
 
 export const Dashboard: React.FC<any> = () => {
   const [namespaces, setNamespaces] = useState<any>([]);
@@ -114,6 +121,23 @@ export const Dashboard: React.FC<any> = () => {
     }
   };
 
+  const handleDragEnd = async (e: any) => {
+    const { active, over } = e;
+
+    if (!over) {
+      return await handleClickRemoveNs(active.id);
+    }
+    const startPosition = namespaces.findIndex(
+      (ns: any) => ns.id === active.id
+    );
+    const endPosition = namespaces.findIndex((ns: any) => ns.id === over.id);
+
+    const newArr = arrayMove(namespaces, startPosition, endPosition);
+    setNamespaces(newArr);
+
+    await axios.put("http://localhost:3000/api/v1/namespace/order", newArr);
+  };
+
   return (
     <>
       {namespaces.length > 0 ? (
@@ -124,7 +148,7 @@ export const Dashboard: React.FC<any> = () => {
                 onClick={() => setAddN(true)}
                 className={`p-2 ${
                   addN && "bg-white text-secondary"
-                } rounded-md hover:cursor-pointer hover:opacity-70`}
+                } rounded-md hover:cursor-pointer hover:opacity-70 transition duration-1000`}
               >
                 Namespace
               </p>
@@ -132,7 +156,7 @@ export const Dashboard: React.FC<any> = () => {
                 onClick={() => setAddN(false)}
                 className={`p-2 ${
                   !addN && "bg-white text-secondary"
-                } rounded-md hover:cursor-pointer hover:opacity-70`}
+                } rounded-md hover:cursor-pointer hover:opacity-70 transition duration-1000`}
               >
                 Tarea
               </p>
@@ -143,38 +167,26 @@ export const Dashboard: React.FC<any> = () => {
               <AddTask namespaces={namespaces} addTask={addTask} />
             )}
           </div>
-          <div className="h-[calc(100vh-100px)] flex w-full p-4 overflow-x-scroll gap-8">
-            {namespaces.map((ns: any) => (
-              <div
-                key={ns.id}
-                className=" bg-white min-w-[300px] rounded-md overflow-y-scroll"
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <div className="h-[calc(100vh-100px)] flex w-full p-4 overflow-x-scroll gap-8">
+              <SortableContext
+                items={namespaces}
+                strategy={horizontalListSortingStrategy}
               >
-                <div
-                  onClick={() => handleClickRemoveNs(ns.id)}
-                  className="flex items-center justify-end  text-primary"
-                >
-                  <p className="p-2 hover:cursor-pointer hover:opacity-70">
-                    <FontAwesomeIcon icon={faXmark} />
-                  </p>
-                </div>
-                <h3 className="text-center text-primary uppercase font-semibold">
-                  {ns.name}
-                </h3>
-                <h4 className="text-sm text-center text-primary/70">
-                  {ns.description}
-                </h4>
-                {ns.tasks.map((t: any) => (
-                  <div
-                    key={t.id}
-                    className="flex flex-col items-center bg-primary p-2 m-4 rounded-md"
-                  >
-                    <h3 className="text-white font-semibold">{t.title}</h3>
-                    <h3 className="text-white">{t.description}</h3>
-                  </div>
+                {namespaces.map((ns: any) => (
+                  <Namespace
+                    key={ns.id}
+                    namespaces={namespaces}
+                    ns={ns}
+                    handleClickRemoveNs={handleClickRemoveNs}
+                  />
                 ))}
-              </div>
-            ))}
-          </div>
+              </SortableContext>
+            </div>
+          </DndContext>
         </div>
       ) : (
         <div className="w-full h-[calc(100vh-68px)] flex justify-center items-center gap-4">
