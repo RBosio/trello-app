@@ -7,6 +7,7 @@ import { StateCompo } from "./context/StateCompo";
 import { useContext, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "./context/userContext";
+import { Dashboard } from "./components/Dashboard";
 
 function App() {
   const { loadUser } = useContext(UserContext);
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/*" element={<Navigate to={"/"} />} />
       </Routes>
     </StateCompo>

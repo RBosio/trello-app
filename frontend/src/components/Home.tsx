@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "./Button";
-import { faRocket } from "@fortawesome/free-solid-svg-icons";
+import { faDashboard, faRocket } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
@@ -26,7 +26,11 @@ export const Home = () => {
           </div>
         ) : (
           <div className="mt-2">
-            <Button>Dashboard</Button>
+            <Link to={"/dashboard"}>
+              <Button>
+                Dashboard <FontAwesomeIcon icon={faDashboard} />
+              </Button>
+            </Link>
           </div>
         )}
       </div>

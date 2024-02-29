@@ -14,6 +14,7 @@ export const useForm = (initialForm: any, setMessage: any) => {
 
   return {
     formState,
+    setForm,
     onInputChange,
   };
 };

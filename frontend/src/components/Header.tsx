@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faDashboard,
   faHome,
   faRightToBracket,
   faUserPlus,
@@ -48,6 +49,12 @@ export const Header: React.FC<any> = () => {
             <p>
               Bienvenido {user.surname}, {user.name}!
             </p>
+            <NavLink
+              to={"/dashboard"}
+              className="flex items-center gap-2 hover:cursor-pointer hover:opaciy-70 hover:underline"
+            >
+              Dashboard <FontAwesomeIcon icon={faDashboard} />
+            </NavLink>
             <NavLink
               to={"/"}
               className="flex items-center gap-2 hover:cursor-pointer hover:opaciy-70 hover:underline"
