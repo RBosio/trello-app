@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "./Button";
 import { faRocket } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   return (
@@ -11,8 +12,12 @@ export const Home = () => {
           ¡Empieza ahora! <FontAwesomeIcon icon={faRocket} />
         </h3>
         <div className="mt-2 flex items-center justify-between w-full">
-          <Button link={"/signup"}>Registrarse</Button>
-          <Button link={"/signin"}>Iniciar sesión</Button>
+          <Link to="/signup">
+            <Button>Registrarse</Button>
+          </Link>
+          <Link to="/signin">
+            <Button>Iniciar sesión</Button>
+          </Link>
         </div>
       </div>
     </div>
