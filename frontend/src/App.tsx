@@ -3,10 +3,16 @@ import { Header } from "./components/Header";
 import { Home } from "./components/Home";
 import { Signup } from "./components/Signup";
 import { Signin } from "./components/Signin";
+import { StateCompo } from "./context/StateCompo";
+import { useContext, useEffect } from "react";
+import axios from "axios";
+import { UserContext } from "./context/userContext";
 
 function App() {
+  const { loadUser } = useContext(UserContext);
+
   return (
-    <>
+    <StateCompo>
       <Header />
 
       <Routes>
@@ -15,7 +21,7 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/*" element={<Navigate to={"/"} />} />
       </Routes>
-    </>
+    </StateCompo>
   );
 }
 

@@ -27,11 +27,11 @@ export const Signup = () => {
       email.length === 0 ||
       password.length === 0
     ) {
-      return setMessage("Fields required!");
+      return setMessage("Todos los campos son requeridos!");
     }
 
     if (!validEmail.test(email)) {
-      return setMessage("Email is not valid!");
+      return setMessage("Email inválido!");
     }
 
     try {
