@@ -13,9 +13,15 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    const userFounded = await this.findOneByEmail(createUserDto.email);
+    if (userFounded) {
+      throw new HttpException('email is duplicated!', HttpStatus.CONFLICT);
+    }
+
     const user = this.userRepository.create(createUserDto);
 
     user.password = await hash(user.password, 10);
+
     return this.userRepository.save(user);
   }
 
